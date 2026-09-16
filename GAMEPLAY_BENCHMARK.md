@@ -1,4 +1,4 @@
-# Arena Zero v2 gameplay benchmark
+# Arena Zero v2.1 gameplay benchmark
 
 This document records the concrete references used for the v2 combat pass. Arena Zero is not intended to clone Call of Duty or Battlefield; the references are used to validate pacing, responsiveness and information feedback.
 
@@ -101,8 +101,32 @@ Source:
 
 ## Asset policy
 
-Poly Haven is the primary realism source: CC0 PBR materials, HDRIs and models. v2 expands the downloader with asphalt, concrete wall/slab, brick, corrugated metal and metal plate surfaces plus military crates, barriers, trash bags, barrels, security lights and the service pistol. Large binaries stay out of Git and are installed locally with `npm run assets`.
+Poly Haven is the primary environment-realism source: CC0 PBR materials, HDRIs and scene props. The equipped pistol and third-person operators are separately audited CC0 gameplay GLBs from 3DAssets.dev because gameplay assets must be semantically single-purpose. Large binaries stay out of Git and are installed locally with `npm run assets`. See `ASSET_AUDIT.md`.
 
 Sources:
 - https://polyhaven.com/license
 - https://polyhaven.com
+
+
+## v2.1 playtest correction — survivability and asset semantics
+
+The first v2 playtest exposed two problems that a pure stat/visual review did not catch:
+
+1. **Asset semantics:** Poly Haven's `service_pistol` contains multiple presentation variants and detachable parts in one scene graph. It is no longer accepted as an equipped gameplay weapon. See `ASSET_AUDIT.md`.
+2. **Practical lethality:** 150 HP still felt too fast once several server bots could acquire the same human target. v2.1 therefore changes both health/damage **and bot behavior**, rather than only inflating HP.
+
+Current v2.1 combat profile:
+
+- Health: **225 HP**
+- Pistol: **22 body / 38 head**
+- Fire interval: **170 ms**
+- Body shots to kill: **11**
+- Headshots to kill: **6**
+- Theoretical body TTK: **1.70 s**
+- Theoretical head TTK: **0.85 s**
+- Regeneration delay: **4.5 s**; regeneration: **30 HP/s**
+- Spawn protection: **1.5 s**
+- Bot target acquisition now penalizes targets already being engaged by other bots.
+- Bots get a reaction delay after switching targets, wider weapon spread, and a 0.52–0.80 s firing cadence rather than near-player cadence.
+
+The earlier 150 HP v2 figures above are retained as historical context for the first upgrade pass; v2.1 supersedes them.
