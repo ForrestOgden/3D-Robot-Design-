@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0d10" />
+    <title>Arena Zero</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="hud" class="hud hidden">
+      <div class="hud-top">
+        <div id="matchTimer" class="chip">08:00</div>
+        <div id="scoreLine" class="chip">0 — 0</div>
+        <div id="ping" class="chip">0 ms</div>
+      </div>
+      <div id="killfeed" class="killfeed"></div>
+      <div id="crosshair" class="crosshair"><span></span><span></span><span></span><span></span></div>
+      <div id="hitmarker" class="hitmarker">×</div>
+      <div class="hud-bottom">
+        <div class="status-panel">
+          <div class="label">HEALTH</div><div id="health" class="big">100</div>
+        </div>
+        <div class="weapon-panel">
+          <div id="weaponName" class="weapon-name">SERVICE PISTOL</div>
+          <div><span id="ammo" class="ammo">15</span><span class="reserve"> / <span id="reserve">90</span></span></div>
+        </div>
+      </div>
+      <div id="damageVignette" class="damage-vignette"></div>
+      <div id="respawn" class="respawn hidden"></div>
+      <div class="credit">Poly Haven CC0 assets</div>
+    </div>
+    <div id="menu" class="menu">
+      <div class="panel">
+        <div class="eyebrow">MULTIPLAYER ARENA FPS</div>
+        <h1>ARENA ZERO</h1>
+        <p>Fast authoritative multiplayer combat with server-side bots. Click play, then use mouse look and standard PC FPS controls.</p>
+        <label>Callsign<input id="nameInput" maxlength="18" value="Operator" /></label>
+        <div class="settings-row">
+          <label>Mouse sensitivity<input id="sensitivity" type="range" min="0.08" max="0.5" value="0.22" step="0.01" /></label>
+          <label>FOV<input id="fov" type="range" min="75" max="110" value="92" step="1" /></label>
+        </div>
+        <button id="playButton">ENTER ARENA</button>
+        <div class="controls"><b>WASD</b> Move · <b>Shift</b> Sprint · <b>Ctrl/C</b> Crouch · <b>Space</b> Jump · <b>Mouse 1</b> Fire · <b>Mouse 2</b> Aim · <b>R</b> Reload · <b>Esc</b> Unlock cursor</div>
+        <div id="assetStatus" class="asset-status">Loading Poly Haven asset manifest…</div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
