@@ -2,16 +2,18 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { gameplayAssetEntries } from '../src/assetCatalog.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'public', 'assets', 'polyhaven');
+const externalOut = path.join(root, 'public', 'assets', 'external');
 await fs.mkdir(out, { recursive: true });
+await fs.mkdir(externalOut, { recursive: true });
 
 const UA = 'ArenaZeroFPS/2.0 (Poly Haven CC0 asset fetcher; https://github.com/ForrestOgden/arena-zero-fps)';
 const API = 'https://api.polyhaven.com/files/';
 
 const MODEL_IDS = [
-  'service_pistol',
   'barrel_03',
   'concrete_road_barrier',
   'concrete_road_barrier_02',
@@ -136,6 +138,7 @@ const manifest = {
   license: 'CC0',
   generated: new Date().toISOString(),
   models: {},
+  externalModels: {},
   materials: {},
   hdri: null
 };
@@ -144,6 +147,24 @@ for (const id of MODEL_IDS) {
   try { manifest.models[id] = await model(id); }
   catch (e) { console.warn(`Skipping ${id}: ${e.message}`); }
 }
+
+for (const [id, asset] of gameplayAssetEntries()) {
+  try {
+    console.log(`Gameplay model ${id} (${asset.source})`);
+    const dest = path.join(externalOut, `${id}.glb`);
+    await download(asset.url, dest);
+    manifest.externalModels[id] = {
+      url: `/assets/external/${id}.glb`,
+      source: asset.source,
+      sourcePage: asset.page,
+      license: asset.license,
+      role: asset.role
+    };
+  } catch (e) {
+    console.warn(`Skipping gameplay model ${id}: ${e.message}`);
+  }
+}
+
 for (const id of MATERIAL_IDS) {
   try { manifest.materials[id] = await material(id); }
   catch (e) { console.warn(`Skipping ${id}: ${e.message}`); }
