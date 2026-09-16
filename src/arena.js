@@ -181,7 +181,6 @@ export async function buildArena(scene, manifest) {
     box(scene, o, material);
   }
 
-  // Industrial skyline: geometry stays outside the playable collision boundary but fills reflections and sightlines.
   const buildingSpecs = [
     [-49, -25, 17, 13, 13, brick, 0], [-50, 5, 20, 12, 18, wallConcrete, 0], [-49, 28, 15, 13, 11, corrugated, 0],
     [49, -27, 19, 12, 15, slabConcrete, Math.PI], [50, 1, 18, 14, 20, brick, Math.PI], [49, 29, 14, 11, 12, wallConcrete, Math.PI],
@@ -190,13 +189,11 @@ export async function buildArena(scene, manifest) {
   ];
   for (const spec of buildingSpecs) addBuilding(scene, ...spec, metal);
 
-  // Ground markings improve speed perception and combat readability.
   for (let x = -28; x <= 28; x += 14) addStripe(scene, x, 0, .16, 68, 0xd8d1ad);
   for (let z = -28; z <= 28; z += 14) addStripe(scene, 0, z, 68, .12, 0x8d9aa0);
   addStripe(scene, 0, -32, 20, .28, 0xe2a845);
   addStripe(scene, 0, 32, 20, .28, 0xe2a845);
 
-  // Utility details: pipes, overhead braces, roof silhouettes.
   for (const y of [2.1, 3.3]) {
     addPipe(scene, 0, y, -37.3, 58, metal, true);
     addPipe(scene, 0, y, 37.3, 58, metal, true);
@@ -206,8 +203,6 @@ export async function buildArena(scene, manifest) {
   const models = {};
   if (manifest?.models) {
     for (const [id, url] of Object.entries(manifest.models)) {
-      // The old Poly Haven service_pistol is intentionally ignored as a gameplay weapon because it
-      // contains multiple grip variants, loose magazines and bullets in one presentation scene.
       if (id === 'service_pistol') continue;
       try {
         const gltf = await gltfLoader.loadAsync(url);
@@ -217,9 +212,6 @@ export async function buildArena(scene, manifest) {
     }
   }
 
-  // Load audited, single-role gameplay assets. Prefer local copies produced by `npm run assets`, then
-  // fall back to the providers' permanent CORS-enabled CC0 CDN URLs so stale manifests cannot revive
-  // the old multi-variant pistol bug.
   for (const [id, asset] of gameplayAssetEntries()) {
     if (models[id]) continue;
     const localUrl = manifest?.externalModels?.[id]?.url;
@@ -235,16 +227,7 @@ export async function buildArena(scene, manifest) {
     }
   }
 
-  // Compatibility alias used by the existing viewmodel/network code. This now always points to the
-  // audited single-configuration pistol, never Poly Haven's presentation scene.
   models.service_pistol = models.weapon_service_pistol || null;
-  if (models.service_pistol) {
-    models.service_pistol._operatorPoses = {
-      stand: models.operator_recon_stand || null,
-      crouch: models.operator_recon_crouch || null,
-      run: models.operator_recon_crouch || null
-    };
-  }
 
   const scatter = (id, placements) => {
     const root = models[id];
