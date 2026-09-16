@@ -231,7 +231,7 @@ export async function buildArena(scene, manifest) {
     models.service_pistol._operatorPoses = {
       stand: models.operator_recon_stand || null,
       crouch: models.operator_recon_crouch || null,
-      run: models.operator_recon_run || null
+      run: models.operator_recon_crouch || null
     };
   }
 
