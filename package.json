@@ -1,6 +1,6 @@
 {
   "name": "arena-zero-fps",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "dev": "node server.mjs --dev",
     "build": "vite build",
     "start": "node server.mjs",
-    "check": "node --check server.mjs && node --check src/main.js && node --check src/shared.js && node --check src/arena.js && node --check scripts/download-polyhaven.mjs",
+    "check": "node --check server.mjs && node --check src/main.js && node --check src/shared.js && node --check src/arena.js && node --check src/operator.js && node --check src/viewmodel.js && node --check src/killcam.js && node --check scripts/download-polyhaven.mjs",
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
