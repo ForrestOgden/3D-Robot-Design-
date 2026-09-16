@@ -26,6 +26,8 @@ export function createViewModel(camera, weaponSource = null) {
   const sleeveMat = new THREE.MeshStandardMaterial({ color: 0x343b39, metalness: .02, roughness: .94 });
 
   let weapon;
+  let weaponScale = 1;
+  let authoredMuzzle = null;
   let weaponMixer = null;
   const weaponActions = new Map();
   if (weaponSource) {
@@ -34,9 +36,11 @@ export function createViewModel(camera, weaponSource = null) {
     const initialBox = new THREE.Box3().setFromObject(weapon);
     const initialSize = initialBox.getSize(new THREE.Vector3());
     const authoredLength = Math.max(initialSize.x, initialSize.z, .001);
-    weapon.scale.setScalar(.29 / authoredLength);
+    weaponScale = .29 / authoredLength;
+    weapon.scale.setScalar(weaponScale);
     weapon.rotation.set(0, Math.PI, 0);
     weapon.position.set(.015, -.075, .075);
+    if (weaponSource._assetMeta?.muzzle) authoredMuzzle = new THREE.Vector3(...weaponSource._assetMeta.muzzle);
     weapon.traverse(x => {
       if (x.isMesh) {
         x.castShadow = false;
@@ -89,15 +93,19 @@ export function createViewModel(camera, weaponSource = null) {
   weaponAnchor.add(fallbackMagazine);
   const embeddedMagazine = findMagazine(weapon);
 
+  // Place muzzle FX from the audited model's published connector rather than a hard-coded legacy offset.
+  const muzzlePosition = authoredMuzzle
+    ? authoredMuzzle.clone().multiplyScalar(weaponScale).applyAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI).add(weapon.position)
+    : new THREE.Vector3(.02, .015, -.22);
   const muzzleLight = new THREE.PointLight(0xffad62, 0, 3.2, 2);
-  muzzleLight.position.set(.02, .015, -.43);
+  muzzleLight.position.copy(muzzlePosition);
   root.add(muzzleLight);
   const muzzleFlash = new THREE.Mesh(
-    new THREE.ConeGeometry(.07, .22, 8, 1, true),
+    new THREE.ConeGeometry(.045, .15, 8, 1, true),
     new THREE.MeshBasicMaterial({ color: 0xffd094, transparent: true, opacity: .92, blending: THREE.AdditiveBlending, depthWrite: false })
   );
   muzzleFlash.rotation.x = -Math.PI / 2;
-  muzzleFlash.position.set(.02, .015, -.51);
+  muzzleFlash.position.copy(muzzlePosition).add(new THREE.Vector3(0, 0, -.055));
   muzzleFlash.visible = false;
   root.add(muzzleFlash);
 
