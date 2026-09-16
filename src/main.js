@@ -76,8 +76,8 @@ function localMove(dt){
   me.crouch=keys.has('ControlLeft')||keys.has('ControlRight')||keys.has('KeyC');me.sprint=(keys.has('ShiftLeft')||keys.has('ShiftRight'))&&!me.crouch&&f>0;
   const speed=me.crouch?CROUCH_SPEED:me.sprint?SPRINT_SPEED:WALK_SPEED;const sy=Math.sin(yaw),cy=Math.cos(yaw);
   const dx=(-sy*f+cy*r)*speed*dt,dz=(-cy*f-sy*r)*speed*dt;[me.x,me.z]=resolveArenaMove(me.x,me.z,me.x+dx,me.z+dz,PLAYER_RADIUS);
-  if(keys.has('Space')&&me.y<=.001&&!me.crouch){me.vy=JUMP_SPEED;keys.delete('Space');}me.vy-=GRAVITY*dt;me.y+=me.vy*dt;if(me.y<0){me.y=0;me.vy=0;}
-  socket.emit('input',{f,r,jump:false,crouch:me.crouch,sprint:me.sprint,yaw,pitch,seq:++seq});
+  const jumpNow=keys.has('Space')&&me.y<=.001&&!me.crouch;if(jumpNow){me.vy=JUMP_SPEED;keys.delete('Space');}me.vy-=GRAVITY*dt;me.y+=me.vy*dt;if(me.y<0){me.y=0;me.vy=0;}
+  socket.emit('input',{f,r,jump:jumpNow,crouch:me.crouch,sprint:me.sprint,yaw,pitch,seq:++seq});
   const moving=Math.hypot(f,r)>0;const t=performance.now()/1000;const bob=moving&&me.y<=.001?Math.sin(t*(me.sprint?15:11))*(me.sprint?.032:.022):0;const side=moving?Math.cos(t*(me.sprint?7.5:5.5))*.012:0;
   const eye=EYE_OFFSET*(me.crouch?.72:1);camera.position.set(me.x,me.y+eye+bob,me.z);camera.rotation.order='YXZ';camera.rotation.y=yaw;camera.rotation.x=pitch+side*.18;
   const targetFov=Number(ui.fov.value)+(me.sprint?5:0)-(ads?12:0);camera.fov=lerp(camera.fov,targetFov,1-Math.exp(-dt*10));camera.updateProjectionMatrix();
