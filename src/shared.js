@@ -1,5 +1,5 @@
-export const TICK_RATE = 30;
-export const SNAPSHOT_RATE = 20;
+export const TICK_RATE = 60;
+export const SNAPSHOT_RATE = 30;
 export const ARENA_HALF = 38;
 export const PLAYER_RADIUS = 0.42;
 export const STAND_HEIGHT = 1.78;
@@ -10,20 +10,28 @@ export const JUMP_SPEED = 8.2;
 export const WALK_SPEED = 6.2;
 export const SPRINT_SPEED = 9.1;
 export const CROUCH_SPEED = 3.4;
-export const MAX_HEALTH = 100;
+export const MAX_HEALTH = 225;
+export const HEALTH_REGEN_DELAY = 4.5;
+export const HEALTH_REGEN_RATE = 30;
+export const SPAWN_PROTECTION_SECONDS = 1.5;
+export const RESPAWN_MS = 5200;
+export const KILLCAM_REPLAY_MS = 3000;
 export const MATCH_SECONDS = 8 * 60;
 
 export const WEAPON = {
   name: 'Service Pistol',
   magSize: 15,
   reserve: 90,
-  damage: 34,
-  headDamage: 72,
-  fireInterval: 0.145,
-  reloadSeconds: 1.45,
+  damage: 22,
+  headDamage: 38,
+  fireInterval: 0.17,
+  reloadSeconds: 1.9,
   range: 120,
-  spreadHip: 0.012,
-  spreadAds: 0.003
+  spreadHip: 0.013,
+  spreadAds: 0.0028,
+  recoilPitch: 0.040,
+  recoilYaw: 0.012,
+  recoilRoll: 0.010
 };
 
 export const SPAWNS = [
@@ -81,4 +89,13 @@ export function rayAabb(origin, dir, box, maxDist = 999) {
     if (tmin>tmax) return null;
   }
   return tmin;
+}
+export function bodyShotsToKill(damage = WEAPON.damage, health = MAX_HEALTH) {
+  return Math.ceil(health / damage);
+}
+export function headShotsToKill(damage = WEAPON.headDamage, health = MAX_HEALTH) {
+  return Math.ceil(health / damage);
+}
+export function theoreticalTtk(shots, interval = WEAPON.fireInterval) {
+  return Math.max(0, shots - 1) * interval;
 }

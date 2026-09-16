@@ -3,38 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0d10" />
+    <meta name="theme-color" content="#080b0d" />
     <title>Arena Zero</title>
   </head>
   <body>
     <div id="app"></div>
+
     <div id="hud" class="hud hidden">
       <div class="hud-top">
         <div id="matchTimer" class="chip">08:00</div>
-        <div id="scoreLine" class="chip">0 — 0</div>
+        <div id="scoreLine" class="chip">0 K — 0 D</div>
         <div id="ping" class="chip">0 ms</div>
       </div>
+
       <div id="killfeed" class="killfeed"></div>
       <div id="crosshair" class="crosshair"><span></span><span></span><span></span><span></span></div>
-      <div id="hitmarker" class="hitmarker">×</div>
+      <div id="hitmarker" class="hitmarker"><i></i><i></i><i></i><i></i></div>
+      <div id="hitDamage" class="hit-damage"></div>
+
+      <div id="reloadIndicator" class="reload-indicator hidden">
+        <div>RELOADING</div>
+        <div class="reload-track"><span id="reloadBar"></span></div>
+      </div>
+
       <div class="hud-bottom">
-        <div class="status-panel">
-          <div class="label">HEALTH</div><div id="health" class="big">100</div>
+        <div id="healthPanel" class="status-panel">
+          <div class="status-row"><span class="label">HEALTH</span><span><b id="health">150</b><small> / <span id="maxHealth">150</span></small></span></div>
+          <div class="health-track"><span id="healthBar"></span></div>
         </div>
         <div class="weapon-panel">
           <div id="weaponName" class="weapon-name">SERVICE PISTOL</div>
           <div><span id="ammo" class="ammo">15</span><span class="reserve"> / <span id="reserve">90</span></span></div>
         </div>
       </div>
+
       <div id="damageVignette" class="damage-vignette"></div>
-      <div id="respawn" class="respawn hidden"></div>
-      <div class="credit">Poly Haven CC0 assets</div>
+      <div id="deathBars" class="death-bars hidden"><span></span><span></span></div>
+      <div id="respawn" class="respawn hidden">RESPAWNING</div>
+
+      <div id="killcam" class="killcam hidden">
+        <div class="killcam-header"><strong>KILLCAM</strong><span id="killcamWeapon">SERVICE PISTOL</span></div>
+        <div class="killcam-footer">
+          <div><span class="micro">KILLED BY</span><strong id="killcamKiller">OPERATOR</strong></div>
+          <div class="killer-health"><span class="micro">ATTACKER HEALTH</span><strong><span id="killcamHealth">0</span> HP</strong></div>
+        </div>
+      </div>
+
+      <div class="credit">Poly Haven CC0 environment assets · GTAO/HDR lighting</div>
     </div>
+
     <div id="menu" class="menu">
       <div class="panel">
         <div class="eyebrow">MULTIPLAYER ARENA FPS</div>
         <h1>ARENA ZERO</h1>
-        <p>Fast authoritative multiplayer combat with server-side bots. Click play, then use mouse look and standard PC FPS controls.</p>
+        <p>Authoritative arena combat with server-side bots, replay killcams, 150 HP survivability, weapon recoil and a physically based industrial arena.</p>
         <label>Callsign<input id="nameInput" maxlength="18" value="Operator" /></label>
         <div class="settings-row">
           <label>Mouse sensitivity<input id="sensitivity" type="range" min="0.08" max="0.5" value="0.22" step="0.01" /></label>
@@ -45,6 +67,7 @@
         <div id="assetStatus" class="asset-status">Loading Poly Haven asset manifest…</div>
       </div>
     </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
