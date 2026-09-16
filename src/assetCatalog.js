@@ -10,6 +10,8 @@ export const GAMEPLAY_ASSETS = Object.freeze({
     url: 'https://cdn.3dassets.dev/assets/33455/v1/model.glb',
     facing: '+Z',
     expectedHeightM: 0.189,
+    triangles: 37152,
+    expectedAnimations: ['slide-open', 'slide-close', 'magazine-open', 'magazine-close', 'cock'],
     description: 'High-detail single assembled duty pistol with reflex sight, weapon light, and named slide/magazine pivots.'
   }),
   operator_recon_stand: Object.freeze({
@@ -20,6 +22,7 @@ export const GAMEPLAY_ASSETS = Object.freeze({
     url: 'https://cdn.3dassets.dev/assets/28523/v1/model.glb',
     facing: '+Z',
     expectedHeightM: 1.854,
+    triangles: 30195,
     description: 'High-detail dark-teal/black tactical operator in a standing aim pose with weapon integrated into the rigid character mesh.'
   }),
   operator_recon_crouch: Object.freeze({
@@ -30,17 +33,8 @@ export const GAMEPLAY_ASSETS = Object.freeze({
     url: 'https://cdn.3dassets.dev/assets/28524/v1/model.glb',
     facing: '+Z',
     expectedHeightM: 1.596,
-    description: 'Matching high-detail operator in a low advancing/crouched pose.'
-  }),
-  operator_recon_run: Object.freeze({
-    role: 'operator-advancing-fast',
-    source: '3DAssets.dev',
-    license: 'CC0-1.0',
-    page: 'https://3dassets.dev/assets/arctic-station-fps-kit-attacker-medium-advancing-e7310a73',
-    url: 'https://cdn.3dassets.dev/assets/28524/v1/model.glb',
-    facing: '+Z',
-    expectedHeightM: 1.596,
-    description: 'The same matching advancing pose is reused for locomotion so the character never receives a mismatched extra weapon or body.'
+    triangles: 30195,
+    description: 'Matching high-detail operator in a low advancing/crouched pose. This same source pose is reused for moving states to keep the character assembly consistent.'
   })
 });
 
