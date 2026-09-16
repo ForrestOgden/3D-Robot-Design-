@@ -10,6 +10,8 @@ export const GAMEPLAY_ASSETS = Object.freeze({
     url: 'https://cdn.3dassets.dev/assets/33455/v1/model.glb',
     facing: '+Z',
     expectedHeightM: 0.189,
+    dimensionsM: [0.042, 0.189, 0.211],
+    muzzle: [0, 0.1209, 0.0919],
     triangles: 37152,
     expectedAnimations: ['slide-open', 'slide-close', 'magazine-open', 'magazine-close', 'cock'],
     description: 'High-detail single assembled duty pistol with reflex sight, weapon light, and named slide/magazine pivots.'
