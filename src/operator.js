@@ -17,6 +17,7 @@ function prep(root) {
 function clonePose(source) {
   if (!source) return null;
   const clone = prep(source.clone(true));
+  // 3DAssets.dev tactical operators face +Z. Arena Zero yaw=0 aims down -Z.
   clone.rotation.y = Math.PI;
   return clone;
 }
@@ -51,12 +52,12 @@ function fallbackOperator() {
   return root;
 }
 
-export function createOperator(scene, p, weaponSource = null) {
+export function createOperator(scene, p, poseSources = null) {
   const group = new THREE.Group();
   const bodyRoot = new THREE.Group();
   group.add(bodyRoot);
 
-  const sources = weaponSource?._operatorPoses || null;
+  const sources = poseSources || null;
   const poses = {
     stand: clonePose(sources?.stand),
     crouch: clonePose(sources?.crouch),
